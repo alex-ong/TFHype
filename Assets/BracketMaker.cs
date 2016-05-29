@@ -54,9 +54,10 @@ public class BracketMaker : MonoBehaviour {
     
     //make a one sided bracket.
     public void MakeBracket(List<GameObject> nodes, float xDist, float yDist, float startX, int nodeStart)     
-    {
+    {        
+        List<GameObject> currentBracket = new List<GameObject>();
         for (int i = 0; i < nodes.Count; i++) {
-            GameObject go = new GameObject();
+            GameObject go = GameObject.CreatePrimitive(PrimitiveType.Cube);
             
             go.transform.SetParent(this.gameObject.transform);
             
@@ -64,8 +65,39 @@ public class BracketMaker : MonoBehaviour {
             b.number = nodeStart + i;
             Vector3 pos = new Vector3(startX,-yDist * i,0);
             go.transform.localPosition = pos;
+            go.name = b.ToString();
             this.allBaseBrackets.Add(go);
+            currentBracket.Add(go);
         }
+        
+        List<GameObject> expanded = currentBracket;
+        int counter = 0;
+        while (expanded.Count > 1) 
+        {
+          expanded = ExpandBracket(expanded,xDist);
+          counter++;
+        }
+        
+    }
+    
+    public List<GameObject> ExpandBracket(List<GameObject> gos, float xDist) {
+        List<GameObject> result = new List<GameObject>();
+        for (int i = 0; i < gos.Count; i += 2) {
+            int j = i+1;
+            GameObject newNode = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            Bracket b = newNode.AddComponent<Bracket>();
+            Vector3 pos = new Vector3();
+            pos.x = gos[i].transform.localPosition.x + xDist;
+            pos.y = (gos[i].transform.localPosition.y + gos[j].transform.localPosition.y) / 2;
+            newNode.transform.localPosition = pos;
+            gos[i].GetComponent<Bracket>().next = b;
+            gos[j].GetComponent<Bracket>().next = b;
+            
+            newNode.transform.SetParent(this.gameObject.transform);
+            //:TODO: draw bracket in.            
+            result.Add(newNode);
+        }
+        return result;
     }
         
     

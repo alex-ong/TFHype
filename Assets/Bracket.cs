@@ -5,8 +5,6 @@ public class Bracket : MonoBehaviour {
     public Bracket next;
     public int number;
     
-    public float x;
-    public float y;
     public GameObject contestant1;
     public GameObject contestant2;
     
@@ -16,6 +14,11 @@ public class Bracket : MonoBehaviour {
     public void RegisterContestant(GameObject go) 
     {
     
+    }
+    
+    public override string ToString()
+    {
+        return "Bracket";
     }
   
 }
