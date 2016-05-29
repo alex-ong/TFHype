@@ -5,7 +5,9 @@ public class MoveAnimation : MonoBehaviour {
     private GameObject targetBracket;
     private float startTimer;
     private float endTimer;
+    [SerializeField]
     private AnimationCurve xCurve;
+    [SerializeField]
     private AnimationCurve yCurve;
   
     public Vector3 startPos;
@@ -39,14 +41,19 @@ public class MoveAnimation : MonoBehaviour {
         float perc = Mathf.InverseLerp(0.0f,endTimer, startTimer);
         
         Vector3 pos = new Vector3();
+        
         pos.x = Lerp(startPos.x,targetBracket.transform.position.x, xCurve.Evaluate(perc));
         pos.y = Lerp(startPos.y,targetBracket.transform.position.y, yCurve.Evaluate(perc));
+        if (perc >= 1.0f) {
+            pos.x = targetBracket.transform.position.x;      
+            pos.y = targetBracket.transform.position.y;
+        }
         this.transform.position = pos;
-        if (perc > 1.0f) {
+        if (perc >= 1.0f) {      
             
-            targetBracket.GetComponent<Bracket>().RegisterContestant(this.gameObject);            
-            //destroy this animation.
-            Destroy(this);
+            Bracket b = targetBracket.GetComponent<Bracket>();
+            if (b != null)
+                b.RegisterContestant(this.gameObject);            
         }
         
     }

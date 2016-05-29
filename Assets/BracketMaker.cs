@@ -44,7 +44,7 @@ public class BracketMaker : MonoBehaviour {
                 right.Add(nodes[i]);
             }
             MakeBracket(left,xDistance,yDistance, 0, 0);
-            MakeBracket(right,-xDistance,yDistance, Mathf.Log(nodes.Count/2,2) * xDistance * 2, nodes.Count/2);
+            MakeBracket(right,-xDistance,yDistance, (Mathf.Log(nodes.Count/2,2)+1) * xDistance * 2, nodes.Count/2);
         } else {
             
         }
@@ -63,6 +63,7 @@ public class BracketMaker : MonoBehaviour {
             
             Bracket b = go.AddComponent<Bracket>();
             b.number = nodeStart + i;
+            b.singleContestant = true;
             Vector3 pos = new Vector3(startX,-yDist * i,0);
             go.transform.localPosition = pos;
             go.name = b.ToString();
@@ -84,7 +85,8 @@ public class BracketMaker : MonoBehaviour {
         List<GameObject> result = new List<GameObject>();
         for (int i = 0; i < gos.Count; i += 2) {
             int j = i+1;
-            GameObject newNode = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            //GameObject newNode = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            GameObject newNode = new GameObject();
             Bracket b = newNode.AddComponent<Bracket>();
             Vector3 pos = new Vector3();
             pos.x = gos[i].transform.localPosition.x + xDist;
@@ -92,6 +94,7 @@ public class BracketMaker : MonoBehaviour {
             newNode.transform.localPosition = pos;
             gos[i].GetComponent<Bracket>().next = b;
             gos[j].GetComponent<Bracket>().next = b;
+            b.level = gos[i].GetComponent<Bracket>().level + 1;
             
             newNode.transform.SetParent(this.gameObject.transform);
             //:TODO: draw bracket in.            
