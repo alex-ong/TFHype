@@ -5,7 +5,8 @@ using System.Collections.Generic;
 public class MakeQuads : MonoBehaviour {
     public GameObject cloneMe;
     public List<GameObject> allQuads;
-        
+    public FollowObject fo;
+    
 	// Use this for initialization
     int columns = 25;
 	void Start () {
@@ -30,7 +31,7 @@ public class MakeQuads : MonoBehaviour {
           allQuads.Add(go);
         }
             
-	    
+	    fo.t = this.allQuads[107].transform;
         
         
 	}

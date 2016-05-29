@@ -15,6 +15,12 @@ public class BracketMaker : MonoBehaviour {
     public List<GameObject> allBaseBrackets = new List<GameObject>();
     public BracketAnimatorMaster bam;
     
+    public GameObject line;
+    public float lineThickness = 0.1f;
+    public Transform bracketLinesParent;
+    
+    public AnimationCurve xDie;
+    public AnimationCurve yDie;
   // Use this for initialization
 	void Start () {
 	
@@ -33,7 +39,6 @@ public class BracketMaker : MonoBehaviour {
     
     public void MakeBracket(List<GameObject> nodes)
     {        
-        Debug.Log(nodes.Count);
         if (LeftRightSplit) {           
             List<GameObject> left = new List<GameObject>();
             for (int i = 0; i < nodes.Count/2; i++) {
@@ -43,25 +48,36 @@ public class BracketMaker : MonoBehaviour {
             for (int i = nodes.Count/2; i < nodes.Count; i++) {
                 right.Add(nodes[i]);
             }
-            MakeBracket(left,xDistance,yDistance, 0, 0);
-            MakeBracket(right,-xDistance,yDistance, (Mathf.Log(nodes.Count/2,2)+1) * xDistance * 2, nodes.Count/2);
-        } else {
+            GameObject LeftWinner = MakeBracket(left,xDistance,yDistance, 0, 0);
+            GameObject RightWinner = MakeBracket(right,-xDistance,yDistance, (Mathf.Log(nodes.Count/2,2)+1) * xDistance * 2, nodes.Count/2);
+            
+            List<GameObject> finalBranch = new List<GameObject>();
+            finalBranch.Add(LeftWinner);
+            finalBranch.Add(RightWinner);
+            Bracket leftb = LeftWinner.GetComponent<Bracket>();
+            Bracket rightb = RightWinner.GetComponent<Bracket>();
+            leftb.wait = rightb;
+            rightb.wait = leftb;
+            ExpandBracket(finalBranch,xDistance);
+    } else {
             
         }
         bam.StartChain(nodes,this.allBaseBrackets);
     }
     
     
-    //make a one sided bracket.
-    public void MakeBracket(List<GameObject> nodes, float xDist, float yDist, float startX, int nodeStart)     
+    //make a one sided bracket. Returns winner
+    public GameObject MakeBracket(List<GameObject> nodes, float xDist, float yDist, float startX, int nodeStart)     
     {        
         List<GameObject> currentBracket = new List<GameObject>();
         for (int i = 0; i < nodes.Count; i++) {
-            GameObject go = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            GameObject go = new GameObject();
             
             go.transform.SetParent(this.gameObject.transform);
             
             Bracket b = go.AddComponent<Bracket>();
+            b.loseCurveX = this.xDie;
+            b.loseCurveY = this.yDie;
             b.number = nodeStart + i;
             b.singleContestant = true;
             Vector3 pos = new Vector3(startX,-yDist * i,0);
@@ -78,6 +94,7 @@ public class BracketMaker : MonoBehaviour {
           expanded = ExpandBracket(expanded,xDist);
           counter++;
         }
+        return expanded[0];
         
     }
     
@@ -88,6 +105,8 @@ public class BracketMaker : MonoBehaviour {
             //GameObject newNode = GameObject.CreatePrimitive(PrimitiveType.Cube);
             GameObject newNode = new GameObject();
             Bracket b = newNode.AddComponent<Bracket>();
+            b.loseCurveX = this.xDie;
+            b.loseCurveY = this.yDie;
             Vector3 pos = new Vector3();
             pos.x = gos[i].transform.localPosition.x + xDist;
             pos.y = (gos[i].transform.localPosition.y + gos[j].transform.localPosition.y) / 2;
@@ -97,7 +116,30 @@ public class BracketMaker : MonoBehaviour {
             b.level = gos[i].GetComponent<Bracket>().level + 1;
             
             newNode.transform.SetParent(this.gameObject.transform);
-            //:TODO: draw bracket in.            
+            //:TODO: draw bracket in. 
+            GameObject horLine1 = GameObject.Instantiate(this.line); horLine1.SetActive(true);
+            GameObject horLine2 = GameObject.Instantiate(this.line); horLine2.SetActive(true);
+            Vector3 horPos1 =  new Vector3((gos[i].transform.position.x + newNode.transform.position.x) / 2.0f,
+                                           gos[i].transform.position.y, 0.01f);
+            Vector3 horPos2 = new Vector3((gos[j].transform.position.x + newNode.transform.position.x) / 2.0f,
+                                           gos[j].transform.position.y, 0.01f);
+            Vector3 horScale = new Vector3(Mathf.Abs(gos[i].transform.position.x - newNode.transform.position.x),
+                                            lineThickness, 1.0f);
+                       
+            horLine1.transform.position = horPos1;                                             
+            horLine2.transform.position = horPos2;
+            horLine1.transform.localScale = horScale;
+            horLine2.transform.localScale = horScale;
+            horLine1.transform.SetParent(this.bracketLinesParent);
+            horLine2.transform.SetParent(this.bracketLinesParent);
+            
+            GameObject vertLine = GameObject.Instantiate(this.line); vertLine.SetActive(true);
+            Vector3 vertPos =  newNode.transform.position + new Vector3(0.0f,0f,0.01f);
+            Vector3 vertScale = new Vector3(lineThickness, Mathf.Abs(gos[i].transform.position.y - gos[j].transform.position.y)+lineThickness, 1.0f);
+            vertLine.transform.position = vertPos;
+            vertLine.transform.localScale = vertScale;
+            vertLine.transform.SetParent(this.bracketLinesParent);
+            
             result.Add(newNode);
         }
         return result;
