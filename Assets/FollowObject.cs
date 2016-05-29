@@ -17,7 +17,7 @@ public class FollowObject : MonoBehaviour {
 	void Update () {
         
 	    if (t != null) {
-            timer += Time.deltaTime;
+            timer += Time.deltaTime;            
             this.offset.z = zDistance.Evaluate(timer);
             this.offset.x = xDistance.Evaluate(timer);
             this.transform.position = offset + t.position;

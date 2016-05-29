@@ -21,6 +21,7 @@ public class BracketMaker : MonoBehaviour {
     
     public AnimationCurve xDie;
     public AnimationCurve yDie;
+    public FinalAnimation fa;
   // Use this for initialization
 	void Start () {
 	
@@ -58,7 +59,8 @@ public class BracketMaker : MonoBehaviour {
             Bracket rightb = RightWinner.GetComponent<Bracket>();
             leftb.wait = rightb;
             rightb.wait = leftb;
-            ExpandBracket(finalBranch,xDistance);
+            List<GameObject> final = ExpandBracket(finalBranch,xDistance);
+            final[0].GetComponent<Bracket>().fa = this.fa;
     } else {
             
         }

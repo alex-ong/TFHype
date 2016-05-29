@@ -14,14 +14,17 @@ public class Bracket : MonoBehaviour {
     
     private const int ALWAYS_WIN = 281;
     
-    private const float moveTime = 1.0f;
-    private const float waitTime = -0.5f;
+    private const float moveTime = 0.5f;
+    private const float waitTime = -0.25f;
     
     public bool handledWinner = false;
     public bool canWin = false;
     private GameObject winner;
     public AnimationCurve loseCurveX;
     public AnimationCurve loseCurveY;
+    
+    public FinalAnimation fa;
+    
     public void RegisterContestant(GameObject go) 
     {
         if (contestant1 == null) {
@@ -48,8 +51,10 @@ public class Bracket : MonoBehaviour {
                 winner = con1ID > con2ID ? contestant1 : contestant2;
                 loser = winner == contestant1 ? contestant2 : contestant1;                
             }
-            if (wait == null) {
-                HandleWinner(winner, con1ID == ALWAYS_WIN || con2ID == ALWAYS_WIN ||con1ID == 254 || con2ID == 254 );
+            if (fa != null) {
+                fa.HandleFinalDuel(winner,loser,loseCurveX,loseCurveY);
+            } else if (wait == null) {
+                HandleWinner(winner, true );
                 HandleLoser(loser);            
             } else {
                 HandleLoser(loser);
@@ -84,6 +89,7 @@ public class Bracket : MonoBehaviour {
     public void HandleLoser(GameObject go) {
         GameObject newTarget = new GameObject();
         newTarget.transform.SetParent(this.gameObject.transform);
+        
         newTarget.transform.position = go.transform.position + new Vector3(Random.Range(-3f,3f),-5f,0.0f);
         go.GetComponent<MoveAnimation>().Setup(0.0f,moveTime,newTarget,this.loseCurveX,this.loseCurveY);
         FadeAlpha fa = go.GetComponent<FadeAlpha>();

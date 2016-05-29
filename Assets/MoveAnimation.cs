@@ -52,8 +52,14 @@ public class MoveAnimation : MonoBehaviour {
         if (perc >= 1.0f) {      
             
             Bracket b = targetBracket.GetComponent<Bracket>();
-            if (b != null)
-                b.RegisterContestant(this.gameObject);            
+            if (b != null) {
+                b.RegisterContestant(this.gameObject);   
+            } else {
+                RotateOverTime rot = this.GetComponent<RotateOverTime>();
+                if (rot != null) {
+                  Destroy(rot);
+                }
+            }
         }
         
     }

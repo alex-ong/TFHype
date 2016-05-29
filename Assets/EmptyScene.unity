@@ -95,7 +95,7 @@ GameObject:
   - 4: {fileID: 750069258}
   - 114: {fileID: 750069257}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: MakeQuads
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -129,6 +129,90 @@ Transform:
   - {fileID: 1192813816}
   m_Father: {fileID: 0}
   m_RootOrder: 2
+--- !u!1 &950268902
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 950268903}
+  - 114: {fileID: 950268904}
+  m_Layer: 0
+  m_Name: FinalAnimation
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &950268903
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 950268902}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 5
+--- !u!114 &950268904
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 950268902}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5eec6bdf2a70ba04b9dab23a9d758e5f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  camera: {fileID: 1723281545}
+  loserStack: {fileID: 996206994}
+  BracketLines: {fileID: 1480006200}
+--- !u!1 &996206994
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 996206995}
+  - 114: {fileID: 996206996}
+  m_Layer: 0
+  m_Name: LoserStack
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &996206995
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 996206994}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 55.9, y: -87.65, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 6
+--- !u!114 &996206996
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 996206994}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4913c129fa76fc408700d41c51cab5b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  makeQuads: {fileID: 750069257}
 --- !u!1 &1192813811
 GameObject:
   m_ObjectHideFlags: 0
@@ -263,13 +347,13 @@ MonoBehaviour:
       inSlope: 0
       outSlope: 0
       tangentMode: 0
-    - time: 6.5138254
-      value: 1
+    - time: 4.9987535
+      value: 0.9988646
       inSlope: 0
       outSlope: 0
       tangentMode: 0
-    - time: 10.983089
-      value: 1.9977161
+    - time: 6.984643
+      value: 1.8985114
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -345,8 +429,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4cc22750292d905478fa9d308b0b9fa0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  xDistance: 10
-  yDistance: 1.2
+  xDistance: 7
+  yDistance: 1.1
   mk: {fileID: 750069257}
   allBaseBrackets: []
   bam: {fileID: 1666831392}
@@ -395,6 +479,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
+  fa: {fileID: 950268904}
 --- !u!4 &1666831391
 Transform:
   m_ObjectHideFlags: 0
@@ -498,7 +583,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
-  initialTimeToMove: 4
+  initialTimeToMove: 3
   initialMinTimer: -1
 --- !u!1 &1723281545
 GameObject:
@@ -609,8 +694,8 @@ MonoBehaviour:
       inSlope: -0.2497859
       outSlope: -0.2497859
       tangentMode: 0
-    - time: 17.007454
-      value: -0.024765823
+    - time: 7.9563336
+      value: -0.04489956
       inSlope: 0
       outSlope: 0
       tangentMode: 0
