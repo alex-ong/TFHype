@@ -6,7 +6,7 @@ public class FinalAnimation : MonoBehaviour {
     public GameObject loserStack;
     public GameObject BracketLines;
     public void HandleFinalDuel(GameObject winner, GameObject loser, AnimationCurve x, AnimationCurve y) {
-        Destroy(BracketLines);
+        //Destroy(BracketLines);
         loserStack.GetComponent<LoserStack>().MakeLoserStack(winner,loser);
         FollowObject fo = this.camera.GetComponent<FollowObject>();
         fo.t = loser.transform;

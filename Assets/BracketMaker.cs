@@ -22,6 +22,7 @@ public class BracketMaker : MonoBehaviour {
     public AnimationCurve xDie;
     public AnimationCurve yDie;
     public FinalAnimation fa;
+    public GameObject enableOnMake;
   // Use this for initialization
 	void Start () {
 	
@@ -40,6 +41,7 @@ public class BracketMaker : MonoBehaviour {
     
     public void MakeBracket(List<GameObject> nodes)
     {        
+        enableOnMake.SetActive(true);
         if (LeftRightSplit) {           
             List<GameObject> left = new List<GameObject>();
             for (int i = 0; i < nodes.Count/2; i++) {
